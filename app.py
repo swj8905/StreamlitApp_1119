@@ -1,48 +1,35 @@
-import pandas as pd
-import requests
-import json
-import pydeck as pdk
 import streamlit as st
+from datetime import date, datetime
 
-st.write("# 서울시 따릉이 실시간 시각화")
+from crawling_weather import crwalingweather
 
-api_key = "757766614b74616c374a46696a55"
-bike_dict = {"rackTotCnt":[], "stationName":[],
-             "parkingBikeTotCnt":[], "shared":[],
-             "latitude":[], "longitude":[]}
-num = 0
-while True:
-    url = f"http://openapi.seoul.go.kr:8088/{api_key}/json/bikeList/{1 + 1000 * num}/{1000 + 1000 * num}/"
-    data = requests.get(url)
-    result = json.loads(data.text)  # json --> dict
-    for row in result["rentBikeStatus"]["row"]:
-        bike_dict["rackTotCnt"].append(int(row["rackTotCnt"]))
-        bike_dict["stationName"].append(row["stationName"])
-        bike_dict["parkingBikeTotCnt"].append(int(row["parkingBikeTotCnt"]))
-        bike_dict["shared"].append(int(row["shared"]))
-        bike_dict["latitude"].append(float(row["stationLatitude"]))
-        bike_dict["longitude"].append(float(row["stationLongitude"]))
-    if len(result["rentBikeStatus"]["row"]) != 1000:
-        break
-    num += 1
+current_date = date.today()  # 이 라인 변경
 
-df = pd.DataFrame(bike_dict)
-st.write(df)
+city = st.text_input('City','seoul')
+st.write('selected city : ', city)
 
-# 지도 시각화
-layer = pdk.Layer(
-    "ScatterplotLayer",
-    df,
-    get_position=["longitude", "latitude"],
-    get_fill_color=["255-shared", "255-shared", "255"],
-    get_radius="60*shared/100",
-    pickable=True
-)
+d = st.date_input("Date", current_date)
+st.write('selected city : ', d)
 
-lat_center = df["latitude"].mean()
-lon_center = df["longitude"].mean()
-initial_view = pdk.ViewState(latitude=lat_center, longitude=lon_center, zoom=10)
 
-map = pdk.Deck(layers=[layer], initial_view_state=initial_view,
-               tooltip={"text":"대여소 : {stationName}\n현재 주차 대수 : {parkingBikeTotCnt}"})
-st.pydeck_chart(map)
+def fetch_weather(city_, selected_date):
+    st.write(f'Fetching weather information for {city_} on {selected_date}...')
+    # parse_date = datetime.strptime(selected_date, "%Y-%m-%d")
+
+
+    if d > current_date:
+        st.write('Cannot Select Future Date')
+    else:
+        result = crwalingweather(city_, selected_date)
+        st.write("### One year ago:")
+        st.write(f"**Temperature:** {result['one_year_ago_temp']}, **Weather:** {result['one_year_ago_wdesc']}")
+
+        st.write("### Two years ago:")
+        st.write(f"**Temperature:** {result['two_year_ago_temp']}, **Weather:** {result['two_year_ago_wdesc']}")
+
+        st.write("### Three years ago:")
+        st.write(f"**Temperature:** {result['three_year_ago_temp']}, **Weather:** {result['three_year_ago_wdesc']}")
+
+
+if st.button('Get Weather'):
+    fetch_weather(city, d)
