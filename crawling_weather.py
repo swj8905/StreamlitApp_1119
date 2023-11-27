@@ -2,6 +2,7 @@ from datetime import datetime
 from selenium import webdriver
 import time
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -69,7 +70,8 @@ def crwalingweather(city, sel_date):
     )
     options.page_load_strategy = 'eager'
     geckodriver_path = '/path/to/geckodriver'
-    browser = webdriver.Firefox(options=options, executable_path=geckodriver_path)
+    service = Service(executable_path='C:\Program Files\Chrome Driver\chromedriver.exe')
+    browser = webdriver.Chrome(options=options, service=service)
     browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
 
     input = WebDriverWait(browser, 5).until(
