@@ -80,7 +80,7 @@ def crwalingweather(city, sel_date):
     )
     options.page_load_strategy = 'eager'
     logpath=get_logpath()
-    browser = webdriver.Chrome(options=options, service=get_webdriver_service(logpath=logpath)))
+    browser = webdriver.Chrome(options=options, service=get_webdriver_service(logpath=logpath))
     browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
 
     input = WebDriverWait(browser, 5).until(
