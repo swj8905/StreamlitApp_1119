@@ -58,7 +58,7 @@ def dateSelector(browser_, sel_date_, index_):
 def crwalingweather(city, sel_date):
     options = webdriver.ChromeOptions()
     options.add_experimental_option('detach', True)
-    # options.add_argument("headless")
+    options.add_argument("headless")
     options = webdriver.ChromeOptions()
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36")
     options.add_argument("lang=en")
