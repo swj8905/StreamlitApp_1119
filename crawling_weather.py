@@ -74,26 +74,26 @@ def crwalingweather(city, sel_date):
     browser.execute_script("Object.defineProperty(navigator, 'language', {get: function() {return 'en-US';}});")
 
     browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
-    input = WebDriverWait(browser, 5).until(
+    input = WebDriverWait(browser, 10).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "form.bn-header__searchbox.picker-city.noprint input"))
     )
     input.send_keys(city)
 
-    button = WebDriverWait(browser, 5).until(
+    button = WebDriverWait(browser, 10).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "button.picker-city__button"))
     )
     button.click()
 
-    time.sleep(0.5)
+    time.sleep(2)
     href = browser.find_element(By.CSS_SELECTOR, "table.zebra.fw.tb-theme a").get_attribute("href")
     browser.get(href)
 
-    time.sleep(0.5)
+    time.sleep(2)
     pastweather = browser.find_elements(By.CSS_SELECTOR, "section.layout-grid__hero.tpl-banner__hero a")
     href_pastweather = pastweather[3].get_attribute("href")
 
     browser.get(href_pastweather)
-    time.sleep(0.5)
+    time.sleep(2)
 
     cur_date = browser.find_element(By.CSS_SELECTOR, "div.weatherTooltip div.date")
     print(f'cur city : {cur_date.text} ')
@@ -117,18 +117,18 @@ def crwalingweather(city, sel_date):
 
     # 1년 전 data
     dateSelector(browser, sel_date, move_index)
-    time.sleep(0.5)
+    time.sleep(2)
 
     one_year_ago_temp = browser.find_element(By.CSS_SELECTOR, "div.tempblock div.temp").text
     one_year_ago_wdesc = browser.find_element(By.CSS_SELECTOR, "div.tempblock div.wdesc").text
     print(one_year_ago_temp)
     print(one_year_ago_wdesc)
-    time.sleep(0.5)
+    time.sleep(2)
 
     # 2년 전 data
 
     dateSelector(browser, sel_date, move_index + 12)
-    time.sleep(0.5)
+    time.sleep(2)
 
     two_year_ago_temp = browser.find_element(By.CSS_SELECTOR, "div.tempblock div.temp").text
     two_year_ago_wdesc = browser.find_element(By.CSS_SELECTOR, "div.tempblock div.wdesc").text
@@ -136,16 +136,16 @@ def crwalingweather(city, sel_date):
     print(two_year_ago_wdesc)
 
     # 2년 전 data
-    time.sleep(0.5)
+    time.sleep(2)
 
     dateSelector(browser, sel_date, move_index + 24)
-    time.sleep(0.5)
+    time.sleep(2)
 
     three_year_ago_temp = browser.find_element(By.CSS_SELECTOR, "div.tempblock div.temp").text
     three_year_ago_wdesc = browser.find_element(By.CSS_SELECTOR, "div.tempblock div.wdesc").text
     print(three_year_ago_temp)
     print(three_year_ago_wdesc)
-    time.sleep(0.5)
+    time.sleep(2)
 
     return {
         'one_year_ago_temp': one_year_ago_temp,
