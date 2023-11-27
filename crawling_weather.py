@@ -69,7 +69,7 @@ def crwalingweather(city, sel_date):
     )
     options.page_load_strategy = 'eager'
     geckodriver_path = '/path/to/geckodriver'
-    browser = webdriver.Chrome(options=options, executable_path=geckodriver_path)
+    browser = webdriver.Firefox(options=options, executable_path=geckodriver_path)
     browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
 
     input = WebDriverWait(browser, 5).until(
