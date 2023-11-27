@@ -56,11 +56,9 @@ def dateSelector(browser_, sel_date_, index_):
             i.click()
             break
 
-@st.cache_resource(show_spinner=False)
 def get_logpath():
     return os.path.join(os.getcwd(), 'selenium.log')
     
-@st.cache_resource(show_spinner=False)
 def get_chromedriver_path():
     return shutil.which('chromedriver')
     
