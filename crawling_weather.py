@@ -94,8 +94,6 @@ def crwalingweather(city, sel_date):
 
     browser.get(href_pastweather)
     time.sleep(0.5)
-    browser.set_window_size(1920, 1080)
-    browser.save_screenshot("test1.png")
 
     cur_date = browser.find_element(By.CSS_SELECTOR, "div.weatherTooltip div.date")
     print(f'cur city : {cur_date.text} ')
