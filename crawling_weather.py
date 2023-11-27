@@ -56,23 +56,15 @@ def dateSelector(browser_, sel_date_, index_):
 
 
 def crwalingweather(city, sel_date):
-    options = webdriver.ChromeOptions()
-    options.add_experimental_option('detach', True)
+    options = webdriver.FirefoxOptions()
     options.add_argument('--disable-gpu')
     options.add_argument("headless")
-    options = webdriver.ChromeOptions()
     options.add_argument(
         "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36")
     options.add_argument("lang=en")
-    options.add_experimental_option(
-        "prefs", {
-            # block image loading
-            "profile.managed_default_content_settings.images": 2,
-        }
-    )
     options.page_load_strategy = 'eager'
     service = Service(executable_path=GeckoDriverManager().install())
-    browser = webdriver.Chrome(options=options, service=service)
+    browser = webdriver.Firefox(options=options, service=service)
     browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
 
     input = WebDriverWait(browser, 5).until(
