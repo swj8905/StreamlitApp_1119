@@ -2,11 +2,9 @@ from datetime import datetime
 from selenium import webdriver
 import time
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.firefox import GeckoDriverManager
 
 
 
@@ -56,15 +54,21 @@ def dateSelector(browser_, sel_date_, index_):
 
 
 def crwalingweather(city, sel_date):
-    options = webdriver.FirefoxOptions()
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('detach', True)
     options.add_argument('--disable-gpu')
     options.add_argument("headless")
     options.add_argument(
         "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36")
     options.add_argument("lang=en")
+    options.add_experimental_option(
+        "prefs", {
+            # block image loading
+            "profile.managed_default_content_settings.images": 2,
+        }
+    )
     options.page_load_strategy = 'eager'
-    service = Service(executable_path=GeckoDriverManager().install())
-    browser = webdriver.Firefox(options=options, service=service)
+    browser = webdriver.Chrome(options=options)
     browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
 
     input = WebDriverWait(browser, 5).until(
