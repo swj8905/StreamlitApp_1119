@@ -58,9 +58,10 @@ def crwalingweather(city, sel_date):
     options.add_experimental_option('detach', True)
     options.add_argument('--disable-gpu')
     options.add_argument("headless")
-    options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36")
-    options.add_argument("lang=en")
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36")
+    options.add_argument("--lang=en-US")
+    options.add_argument("accept-language=en-US,en;q=0.9")
+
     options.add_experimental_option(
         "prefs", {
             # block image loading
@@ -69,8 +70,10 @@ def crwalingweather(city, sel_date):
     )
     options.page_load_strategy = 'eager'
     browser = webdriver.Chrome(options=options)
-    browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
+    browser.execute_script("Object.defineProperty(navigator, 'languages', {get: function() {return ['en-US', 'en'];}});")
+    browser.execute_script("Object.defineProperty(navigator, 'language', {get: function() {return 'en-US';}});")
 
+    browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
     input = WebDriverWait(browser, 5).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "form.bn-header__searchbox.picker-city.noprint input"))
     )
@@ -91,6 +94,9 @@ def crwalingweather(city, sel_date):
 
     browser.get(href_pastweather)
     time.sleep(0.5)
+    browser.set_window_size(1920, 1080)
+    browser.save_screenshot("test1.png")
+
     cur_date = browser.find_element(By.CSS_SELECTOR, "div.weatherTooltip div.date")
     print(f'cur city : {cur_date.text} ')
     cur_year, cur_month, cur_day = dateReader(cur_date.text)
