@@ -7,6 +7,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 
@@ -70,7 +71,7 @@ def crwalingweather(city, sel_date):
         }
     )
     options.page_load_strategy = 'eager'
-    browser = webdriver.Chrome(options=options)
+    browser = webdriver.Chrome(options=options, service=Service(ChromeDriverManager().install()))
     browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
 
     input = WebDriverWait(browser, 5).until(
