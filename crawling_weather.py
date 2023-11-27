@@ -1,5 +1,4 @@
-from datetime import datetime  # 이 줄을 추가해주세요
-
+from datetime import datetime
 from selenium import webdriver
 import time
 from selenium.webdriver.common.by import By
@@ -8,6 +7,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from webdriver_manager.chrome import ChromeDriverManager
+import os
+import shutil
 
 
 
@@ -55,7 +56,14 @@ def dateSelector(browser_, sel_date_, index_):
             i.click()
             break
 
-
+@st.cache_resource(show_spinner=False)
+def get_logpath():
+    return os.path.join(os.getcwd(), 'selenium.log')
+    
+@st.cache_resource(show_spinner=False)
+def get_chromedriver_path():
+    return shutil.which('chromedriver')
+    
 def crwalingweather(city, sel_date):
     options = webdriver.ChromeOptions()
     options.add_experimental_option('detach', True)
@@ -71,7 +79,8 @@ def crwalingweather(city, sel_date):
         }
     )
     options.page_load_strategy = 'eager'
-    browser = webdriver.Chrome(options=options, service=Service(ChromeDriverManager().install()))
+    logpath=get_logpath()
+    browser = webdriver.Chrome(options=options, service=get_webdriver_service(logpath=logpath)))
     browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
 
     input = WebDriverWait(browser, 5).until(
