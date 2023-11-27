@@ -61,6 +61,13 @@ def get_logpath():
     
 def get_chromedriver_path():
     return shutil.which('chromedriver')
+
+def get_webdriver_service(logpath):
+    service = Service(
+        executable_path=get_chromedriver_path(),
+        log_output=logpath,
+    )
+    return service
     
 def crwalingweather(city, sel_date):
     options = webdriver.ChromeOptions()
