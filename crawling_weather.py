@@ -6,6 +6,8 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.firefox import GeckoDriverManager
+
 
 
 def dateReader(date_):
@@ -69,8 +71,7 @@ def crwalingweather(city, sel_date):
         }
     )
     options.page_load_strategy = 'eager'
-    geckodriver_path = '/path/to/geckodriver'
-    service = Service(executable_path='C:\Program Files\Chrome Driver\chromedriver.exe')
+    service = Service(executable_path=GeckoDriverManager().install())
     browser = webdriver.Chrome(options=options, service=service)
     browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
 
