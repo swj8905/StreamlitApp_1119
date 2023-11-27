@@ -5,12 +5,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-import os
-import shutil
-
 
 
 def dateReader(date_):
@@ -57,26 +51,15 @@ def dateSelector(browser_, sel_date_, index_):
             i.click()
             break
 
-def get_logpath():
-    return os.path.join(os.getcwd(), 'selenium.log')
-    
-def get_chromedriver_path():
-    return shutil.which('chromedriver')
 
-def get_webdriver_service(logpath):
-    service = Service(
-        executable_path=get_chromedriver_path(),
-        log_output=logpath,
-    )
-    return service
-    
 def crwalingweather(city, sel_date):
     options = webdriver.ChromeOptions()
     options.add_experimental_option('detach', True)
     options.add_argument('--disable-gpu')
     options.add_argument("headless")
     options = webdriver.ChromeOptions()
-    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36")
+    options.add_argument(
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36")
     options.add_argument("lang=en")
     options.add_experimental_option(
         "prefs", {
@@ -85,8 +68,8 @@ def crwalingweather(city, sel_date):
         }
     )
     options.page_load_strategy = 'eager'
-    logpath=get_logpath()
-    browser = webdriver.Chrome(options=options, service=get_webdriver_service(logpath=logpath))
+    geckodriver_path = '/path/to/geckodriver'
+    browser = webdriver.Chrome(options=options, executable_path=geckodriver_path)
     browser.get("https://www.timeanddate.com/weather/south-korea/seoul")
 
     input = WebDriverWait(browser, 5).until(
